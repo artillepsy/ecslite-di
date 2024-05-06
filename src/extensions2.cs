@@ -21,50 +21,50 @@ namespace Leopotam.EcsLite.Di {
         EcsWorld.Mask Fill (EcsWorld.Mask mask);
     }
 
-    public struct EcsFilterInject<TInc> : IEcsDataInject
+    public struct FilterInj<TInc> : IEcsDataInject
         where TInc : struct, IEcsInclude {
-        public EcsFilter Value;
+        public EcsFilter Val;
         public TInc Pools;
         string _worldName;
 
-        public static implicit operator EcsFilterInject<TInc> (string worldName) {
-            return new EcsFilterInject<TInc> { _worldName = worldName };
+        public static implicit operator FilterInj<TInc> (string worldName) {
+            return new FilterInj<TInc> { _worldName = worldName };
         }
 
         void IEcsDataInject.Fill (EcsSystems systems) {
             Pools = default;
-            Value = Pools.Fill (systems.GetWorld (_worldName)).End ();
+            Val = Pools.Fill (systems.GetWorld (_worldName)).End ();
         }
     }
 
-    public struct EcsFilterInject<TInc, TExc> : IEcsDataInject
+    public struct FilterInj<TInc, TExc> : IEcsDataInject
         where TInc : struct, IEcsInclude
         where TExc : struct, IEcsExclude {
-        public EcsFilter Value;
+        public EcsFilter Val;
         public TInc Pools;
         string _worldName;
 
-        public static implicit operator EcsFilterInject<TInc, TExc> (string worldName) {
-            return new EcsFilterInject<TInc, TExc> { _worldName = worldName };
+        public static implicit operator FilterInj<TInc, TExc> (string worldName) {
+            return new FilterInj<TInc, TExc> { _worldName = worldName };
         }
 
         void IEcsDataInject.Fill (EcsSystems systems) {
             Pools = default;
             TExc exc = default;
-            Value = exc.Fill (Pools.Fill (systems.GetWorld (_worldName))).End ();
+            Val = exc.Fill (Pools.Fill (systems.GetWorld (_worldName))).End ();
         }
     }
 
-    public struct EcsPoolInject<T> : IEcsDataInject where T : struct {
-        public EcsPool<T> Value;
+    public struct PoolInj<T> : IEcsDataInject where T : struct {
+        public EcsPool<T> Val;
         string _worldName;
 
-        public static implicit operator EcsPoolInject<T> (string worldName) {
-            return new EcsPoolInject<T> { _worldName = worldName };
+        public static implicit operator PoolInj<T> (string worldName) {
+            return new PoolInj<T> { _worldName = worldName };
         }
 
         void IEcsDataInject.Fill (EcsSystems systems) {
-            Value = systems.GetWorld (_worldName).GetPool<T> ();
+            Val = systems.GetWorld (_worldName).GetPool<T> ();
         }
     }
 
@@ -92,16 +92,16 @@ namespace Leopotam.EcsLite.Di {
         }
     }
 
-    public struct EcsWorldInject : IEcsDataInject {
-        public EcsWorld Value;
+    public struct WorldInj : IEcsDataInject {
+        public EcsWorld Val;
         string _worldName;
 
-        public static implicit operator EcsWorldInject (string worldName) {
-            return new EcsWorldInject { _worldName = worldName };
+        public static implicit operator WorldInj (string worldName) {
+            return new WorldInj { _worldName = worldName };
         }
 
         void IEcsDataInject.Fill (EcsSystems systems) {
-            Value = systems.GetWorld (_worldName);
+            Val = systems.GetWorld (_worldName);
         }
     }
 
